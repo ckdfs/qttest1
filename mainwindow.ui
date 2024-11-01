@@ -129,20 +129,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="buttonOpenPort">
-         <property name="text">
-          <string>打开串口</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="buttonClosePort">
-         <property name="text">
-          <string>关闭串口</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="buttonClearHistory">
          <property name="text">
           <string>清除历史</string>
