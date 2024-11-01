@@ -6,17 +6,16 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , serial(new QSerialPort(this))
+    , isSerialPortOpen(false)
 {
     ui->setupUi(this);
 
     // Populate serial port combo box
-    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
-        ui->comboBoxPort->addItem(info.portName());
-    }
+    refreshSerialPorts();
 
     // Connect signals and slots
-    connect(ui->buttonOpenPort, &QPushButton::clicked, this, &MainWindow::openSerialPort);
-    connect(ui->buttonClosePort, &QPushButton::clicked, this, &MainWindow::closeSerialPort);
+    connect(ui->buttonTogglePort, &QPushButton::clicked, this, &MainWindow::toggleSerialPort);
+    connect(ui->buttonRefreshPorts, &QPushButton::clicked, this, &MainWindow::refreshSerialPorts);
     connect(ui->buttonSend, &QPushButton::clicked, this, &MainWindow::sendSerialData);
     connect(serial, &QSerialPort::readyRead, this, &MainWindow::readSerialData);
 }
@@ -26,27 +25,37 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::openSerialPort()
+void MainWindow::toggleSerialPort()
 {
-    serial->setPortName(ui->comboBoxPort->currentText());
-    serial->setBaudRate(ui->comboBoxBaudRate->currentText().toInt());
-    serial->setDataBits(static_cast<QSerialPort::DataBits>(ui->comboBoxDataBits->currentText().toInt()));
-    serial->setParity(static_cast<QSerialPort::Parity>(ui->comboBoxParity->currentIndex()));
-    serial->setStopBits(static_cast<QSerialPort::StopBits>(ui->comboBoxStopBits->currentIndex()));
-    serial->setFlowControl(QSerialPort::NoFlowControl);
-
-    if (serial->open(QIODevice::ReadWrite)) {
-        QMessageBox::information(this, tr("成功"), tr("串口已打开"));
+    if (isSerialPortOpen) {
+        serial->close();
+        ui->buttonTogglePort->setText("打开串口");
+        ui->buttonTogglePort->setStyleSheet("background-color: red");
+        QMessageBox::information(this, tr("成功"), tr("串口已关闭"));
     } else {
-        QMessageBox::critical(this, tr("错误"), serial->errorString());
+        serial->setPortName(ui->comboBoxPort->currentText());
+        serial->setBaudRate(ui->comboBoxBaudRate->currentText().toInt());
+        serial->setDataBits(static_cast<QSerialPort::DataBits>(ui->comboBoxDataBits->currentText().toInt()));
+        serial->setParity(static_cast<QSerialPort::Parity>(ui->comboBoxParity->currentIndex()));
+        serial->setStopBits(static_cast<QSerialPort::StopBits>(ui->comboBoxStopBits->currentIndex()));
+        serial->setFlowControl(QSerialPort::NoFlowControl);
+
+        if (serial->open(QIODevice::ReadWrite)) {
+            ui->buttonTogglePort->setText("关闭串口");
+            ui->buttonTogglePort->setStyleSheet("background-color: green");
+            QMessageBox::information(this, tr("成功"), tr("串口已打开"));
+        } else {
+            QMessageBox::critical(this, tr("错误"), serial->errorString());
+        }
     }
+    isSerialPortOpen = !isSerialPortOpen;
 }
 
-void MainWindow::closeSerialPort()
+void MainWindow::refreshSerialPorts()
 {
-    if (serial->isOpen()) {
-        serial->close();
-        QMessageBox::information(this, tr("成功"), tr("串口已关闭"));
+    ui->comboBoxPort->clear();
+    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
+        ui->comboBoxPort->addItem(info.portName());
     }
 }
 

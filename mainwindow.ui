@@ -28,7 +28,7 @@
        <item>
         <widget class="QComboBox" name="comboBoxBaudRate">
          <property name="currentText">
-          <string>波特率</string>
+          <string>115200</string>
          </property>
          <item>
           <property name="text">
@@ -60,7 +60,7 @@
        <item>
         <widget class="QComboBox" name="comboBoxDataBits">
          <property name="currentText">
-          <string>数据位</string>
+          <string>8</string>
          </property>
          <item>
           <property name="text">
@@ -146,6 +146,23 @@
         <widget class="QPushButton" name="buttonClearHistory">
          <property name="text">
           <string>清除历史</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonTogglePort">
+         <property name="text">
+          <string>打开串口</string>
+         </property>
+         <property name="styleSheet">
+          <string>background-color: red</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonRefreshPorts">
+         <property name="text">
+          <string>刷新串口</string>
          </property>
         </widget>
        </item>

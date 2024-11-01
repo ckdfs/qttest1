@@ -20,14 +20,15 @@ public:
     ~MainWindow();
 
 private slots:
-    void openSerialPort();
-    void closeSerialPort();
+    void toggleSerialPort();
+    void refreshSerialPorts();
     void sendSerialData();
     void readSerialData();
 
 private:
     Ui::MainWindow *ui;
     QSerialPort *serial;
+    bool isSerialPortOpen;
 };
 
 #endif // MAINWINDOW_H
