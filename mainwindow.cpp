@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -70,22 +71,26 @@ void MainWindow::refreshSerialPorts()
     }
 }
 
+// 发送串口数据
 void MainWindow::sendSerialData()
 {
     if (serial->isOpen()) {
         QString data = ui->textEditToSend->toPlainText();
         serial->write(data.toUtf8());
-        ui->textEditHistory->append("发送: " + data);
+        QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
+        ui->textEditHistory->append("[" + timestamp + "] 发送: " + data);
     } else {
         QMessageBox::warning(this, tr("错误"), tr("串口未打开"));
     }
 }
 
+// 读取串口数据
 void MainWindow::readSerialData()
 {
     if (serial->isOpen()) {
         QByteArray data = serial->readAll();
-        ui->textEditHistory->append("接收: " + QString::fromUtf8(data));
+        QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
+        ui->textEditHistory->append("[" + timestamp + "] 接收: " + QString::fromUtf8(data));
     }
 }
 
