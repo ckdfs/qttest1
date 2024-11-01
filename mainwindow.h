@@ -24,6 +24,7 @@ private slots:
     void refreshSerialPorts();
     void sendSerialData();
     void readSerialData();
+    void clearHistory();
 
 private:
     Ui::MainWindow *ui;

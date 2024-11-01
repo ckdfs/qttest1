@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonTogglePort, &QPushButton::clicked, this, &MainWindow::toggleSerialPort);
     connect(ui->buttonRefreshPorts, &QPushButton::clicked, this, &MainWindow::refreshSerialPorts);
     connect(ui->buttonSend, &QPushButton::clicked, this, &MainWindow::sendSerialData);
+    connect(ui->buttonClearHistory, &QPushButton::clicked, this, &MainWindow::clearHistory);
     connect(serial, &QSerialPort::readyRead, this, &MainWindow::readSerialData);
 }
 
@@ -76,4 +77,9 @@ void MainWindow::readSerialData()
         QByteArray data = serial->readAll();
         ui->textEditHistory->append("接收: " + QString::fromUtf8(data));
     }
+}
+
+void MainWindow::clearHistory()
+{
+    ui->textEditHistory->clear();
 }
