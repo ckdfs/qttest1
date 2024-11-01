@@ -30,6 +30,31 @@
          <property name="currentText">
           <string>波特率</string>
          </property>
+         <item>
+          <property name="text">
+           <string>9600</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>19200</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>38400</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>57600</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>115200</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
@@ -37,6 +62,26 @@
          <property name="currentText">
           <string>数据位</string>
          </property>
+         <item>
+          <property name="text">
+           <string>5</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>6</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>7</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>8</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
@@ -44,6 +89,21 @@
          <property name="currentText">
           <string>校验位</string>
          </property>
+         <item>
+          <property name="text">
+           <string>无</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>奇校验</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>偶校验</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
@@ -51,6 +111,21 @@
          <property name="currentText">
           <string>停止位</string>
          </property>
+         <item>
+          <property name="text">
+           <string>1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>1.5</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>2</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
