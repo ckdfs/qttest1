@@ -13,6 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
     // Populate serial port combo box
     refreshSerialPorts();
 
+    // Select the last serial port
+    if (ui->comboBoxPort->count() > 0) {
+        ui->comboBoxPort->setCurrentIndex(ui->comboBoxPort->count() - 1);
+    }
+
     // Connect signals and slots
     connect(ui->buttonTogglePort, &QPushButton::clicked, this, &MainWindow::toggleSerialPort);
     connect(ui->buttonRefreshPorts, &QPushButton::clicked, this, &MainWindow::refreshSerialPorts);
@@ -57,6 +62,11 @@ void MainWindow::refreshSerialPorts()
     ui->comboBoxPort->clear();
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()) {
         ui->comboBoxPort->addItem(info.portName());
+    }
+
+    // Select the last serial port
+    if (ui->comboBoxPort->count() > 0) {
+        ui->comboBoxPort->setCurrentIndex(ui->comboBoxPort->count() - 1);
     }
 }
 
