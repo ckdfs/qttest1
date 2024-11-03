@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,11 +26,15 @@ private slots:
     void sendSerialData();
     void readSerialData();
     void clearHistory();
+    void processReceivedData();
 
 private:
     Ui::MainWindow *ui;
     QSerialPort *serial;
     bool isSerialPortOpen;
+    QByteArray receiveBuffer;
+    QTimer *receiveTimer;
+    static const int RECEIVE_TIMEOUT = 50;
 };
 
 #endif // MAINWINDOW_H

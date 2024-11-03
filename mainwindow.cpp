@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , serial(new QSerialPort(this))
     , isSerialPortOpen(false)
+    , receiveTimer(new QTimer(this))
 {
     ui->setupUi(this);
 
@@ -25,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonSend, &QPushButton::clicked, this, &MainWindow::sendSerialData);
     connect(ui->buttonClearHistory, &QPushButton::clicked, this, &MainWindow::clearHistory);
     connect(serial, &QSerialPort::readyRead, this, &MainWindow::readSerialData);
+
+    // 初始化接收定时器
+    receiveTimer->setSingleShot(true);
+    connect(receiveTimer, &QTimer::timeout, this, &MainWindow::processReceivedData);
 }
 
 MainWindow::~MainWindow()
@@ -88,10 +93,21 @@ void MainWindow::sendSerialData()
 void MainWindow::readSerialData()
 {
     if (serial->isOpen()) {
-        QByteArray data = serial->readAll();
-        QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
-        ui->textEditHistory->append("[" + timestamp + "] 接收: " + QString::fromUtf8(data));
+        receiveBuffer.append(serial->readAll());
+        // 重启定时器
+        receiveTimer->start(RECEIVE_TIMEOUT);
     }
+}
+
+void MainWindow::processReceivedData()
+{
+    if (receiveBuffer.isEmpty()) {
+        return;
+    }
+
+    QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
+    ui->textEditHistory->append("[" + timestamp + "] 接收: " + QString::fromUtf8(receiveBuffer));
+    receiveBuffer.clear();
 }
 
 void MainWindow::clearHistory()
