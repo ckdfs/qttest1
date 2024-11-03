@@ -150,12 +150,7 @@
             <widget class="QComboBox" name="comboBoxDataBits">
               <item>
                 <property name="text">
-                  <string>8</string>
-                </property>
-              </item>
-              <item>
-                <property name="text">
-                  <string>7</string>
+                  <string>5</string>
                 </property>
               </item>
               <item>
@@ -165,7 +160,12 @@
               </item>
               <item>
                 <property name="text">
-                  <string>5</string>
+                  <string>7</string>
+                </property>
+              </item>
+              <item>
+                <property name="text">
+                  <string>8</string>
                 </property>
               </item>
             </widget>
@@ -233,9 +233,9 @@
         </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="buttonClearHistory">
+        <widget class="QPushButton" name="buttonRefreshPorts">
          <property name="text">
-          <string>清除历史</string>
+          <string>刷新串口</string>
          </property>
         </widget>
        </item>
@@ -247,11 +247,46 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="buttonRefreshPorts">
-         <property name="text">
-          <string>刷新串口</string>
+        <spacer name="verticalSpacerBeforeLine1">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QFrame" name="line1">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacerAfterLine1">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayoutStatus">
@@ -541,6 +576,55 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacerBeforeLine2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QFrame" name="line2">
+         <property name="frameShape">
+          <enum>QFrame::HLine</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacerAfterLine2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonClearHistory">
+         <property name="text">
+          <string>清除历史</string>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer">

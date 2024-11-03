@@ -22,6 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     // 设置打开串口按钮的初始样式为红色
     ui->buttonTogglePort->setStyleSheet("background-color: #F44336;");
 
+    // 设置数据位默认值为8
+    ui->comboBoxDataBits->setCurrentText("8");
+
+    // 设置波特率默认值为115200
+    ui->comboBoxBaudRate->setCurrentText("115200");
+
     // Populate serial port combo box
     refreshSerialPorts();
 
@@ -36,8 +42,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(receiveTimer, &QTimer::timeout, this, &MainWindow::processReceivedData);
 
     // 初始化通道选择下拉框
+    QMap<int, QString> channelMap;
+    channelMap[2] = "YQ";
+    channelMap[3] = "YI";
+    channelMap[4] = "XQ";
+    channelMap[5] = "XI";
+    channelMap[6] = "YP";
+    channelMap[7] = "XP";
+    
     for(int i = 2; i <= 7; i++) {
-        ui->comboBoxChannel->addItem(QString::number(i));
+        ui->comboBoxChannel->addItem(channelMap[i], i);  // 显示文本为映射值，实际值为通道号
     }
 
     // 连接新的信号槽
@@ -190,7 +204,7 @@ void MainWindow::sendControlData()
         return;
     }
     
-    int channel = ui->comboBoxChannel->currentText().toInt();
+    int channel = ui->comboBoxChannel->currentData().toInt();
     double voltage = ui->lineEditVoltage->text().toDouble();
     
     QByteArray data = packProtocolData(isAutoMode, voltage, channel);
