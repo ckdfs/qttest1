@@ -89,7 +89,17 @@ void MainWindow::toggleSerialPort()
         ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
         QMessageBox::information(this, tr("成功"), tr("串口已关闭"));
     } else {
+        #ifdef Q_OS_LINUX
+        // Linux下需要去掉"/dev/"前缀
+        QString portName = ui->comboBoxPort->currentText();
+        if (portName.startsWith("/dev/")) {
+            portName = portName.mid(5);
+        }
+        serial->setPortName(portName);
+        #else
         serial->setPortName(ui->comboBoxPort->currentText());
+        #endif
+        
         serial->setBaudRate(ui->comboBoxBaudRate->currentText().toInt());
         serial->setDataBits(static_cast<QSerialPort::DataBits>(ui->comboBoxDataBits->currentText().toInt()));
         serial->setParity(static_cast<QSerialPort::Parity>(ui->comboBoxParity->currentIndex()));
@@ -116,21 +126,40 @@ void MainWindow::refreshSerialPorts()
     ui->comboBoxPort->clear();
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
     
-    // 自定义排序函数，按COM号排序
+    // 自定义排序函数
     std::sort(ports.begin(), ports.end(), [](const QSerialPortInfo &a, const QSerialPortInfo &b) {
+        #ifdef Q_OS_LINUX
+        // Linux下的串口设备名格式为 ttyUSB0, ttyACM0 等
+        QString aName = a.portName();
+        QString bName = b.portName();
+        if (aName.startsWith("ttyUSB") && bName.startsWith("ttyUSB")) {
+            return aName.midRef(6).toInt() < bName.midRef(6).toInt();
+        } else if (aName.startsWith("ttyACM") && bName.startsWith("ttyACM")) {
+            return aName.midRef(6).toInt() < bName.midRef(6).toInt();
+        }
+        return aName < bName;
+        #else
+        // Windows下保持原有的COM口排序
         QString aName = a.portName().toLower();
         QString bName = b.portName().toLower();
         aName.remove("com");
         bName.remove("com");
         return aName.toInt() < bName.toInt();
+        #endif
     });
     
     foreach (const QSerialPortInfo &info, ports) {
+        #ifdef Q_OS_LINUX
+        // Linux下显示完整设备路径
+        ui->comboBoxPort->addItem("/dev/" + info.portName());
+        #else
+        // Windows下保持原有显示方式
         ui->comboBoxPort->addItem(info.portName());
+        #endif
     }
 
     if (ui->comboBoxPort->count() > 0) {
-        ui->comboBoxPort->setCurrentIndex(ui->comboBoxPort->count() - 1);
+        ui->comboBoxPort->setCurrentIndex(0);
     }
 }
 
