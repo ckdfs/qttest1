@@ -15,12 +15,14 @@
   </property>
   <property name="styleSheet">
    <string>
+    * {
+        font-family: "Microsoft YaHei";
+        font-size: 10pt;
+    }
     QMainWindow {
         background-color: #f0f0f0;
     }
     QWidget#settingsWidget {
-        background-color: #ffffff;
-        border: 1px solid #cccccc;
         border-radius: 5px;
         min-width: 200px;
         max-width: 250px;
@@ -51,6 +53,28 @@
         border-radius: 3px;
         background-color: white;
         min-height: 25px;
+    }
+    QTextEdit {
+        font-size: 12pt;
+    }
+    QFrame.StatusBox {
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        background-color: white;
+        padding: 1px;
+        min-width: 60px;
+        min-height: 30px;
+    }
+    QFrame.StatusBox QLabel {
+        border: none;
+        background: transparent;
+    }
+    QLabel.StatusTitle {
+        font-weight: bold;
+        color: #333333;
+    }
+    QLabel.StatusValue {
+        color: #666666;
     }
    </string>
   </property>
@@ -230,6 +254,295 @@
         </widget>
        </item>
        <item>
+        <layout class="QGridLayout" name="gridLayoutStatus">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <!-- XI -->
+         <item row="0" column="0">
+          <widget class="QFrame" name="frameXI">
+           <property name="styleSheet">
+            <string>QFrame { 
+                border: 1px solid #cccccc; 
+                border-radius: 3px; 
+                background-color: white; 
+                padding: 1px; 
+                min-width: 60px; 
+                min-height: 30px; 
+            }
+            QLabel { 
+                border: none;
+                background: transparent;
+            }</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayoutXI">
+            <item>
+             <widget class="QLabel" name="labelXITitle">
+              <property name="styleSheet">
+               <string>QLabel { font-weight: bold; color: #333333; }</string>
+              </property>
+              <property name="text">
+               <string>XI</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelXIValue">
+              <property name="styleSheet">
+               <string>QLabel { color: #666666; }</string>
+              </property>
+              <property name="text">
+               <string>-9.99</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <!-- YI -->
+         <item row="0" column="1">
+          <widget class="QFrame" name="frameYI">
+           <property name="styleSheet">
+            <string>QFrame { 
+                border: 1px solid #cccccc; 
+                border-radius: 3px; 
+                background-color: white; 
+                padding: 1px; 
+                min-width: 60px; 
+                min-height: 30px; 
+            }
+            QLabel { 
+                border: none;
+                background: transparent;
+            }</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayoutYI">
+            <item>
+             <widget class="QLabel" name="labelYITitle">
+              <property name="styleSheet">
+               <string>QLabel { font-weight: bold; color: #333333; }</string>
+              </property>
+              <property name="text">
+               <string>YI</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelYIValue">
+              <property name="styleSheet">
+               <string>QLabel { color: #666666; }</string>
+              </property>
+              <property name="text">
+               <string>-9.99</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <!-- XQ -->
+         <item row="1" column="0">
+          <widget class="QFrame" name="frameXQ">
+           <property name="styleSheet">
+            <string>QFrame { 
+                border: 1px solid #cccccc; 
+                border-radius: 3px; 
+                background-color: white; 
+                padding: 1px; 
+                min-width: 60px; 
+                min-height: 30px; 
+            }
+            QLabel { 
+                border: none;
+                background: transparent;
+            }</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayoutXQ">
+            <item>
+             <widget class="QLabel" name="labelXQTitle">
+              <property name="styleSheet">
+               <string>QLabel { font-weight: bold; color: #333333; }</string>
+              </property>
+              <property name="text">
+               <string>XQ</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelXQValue">
+              <property name="styleSheet">
+               <string>QLabel { color: #666666; }</string>
+              </property>
+              <property name="text">
+               <string>-9.99</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <!-- YQ -->
+         <item row="1" column="1">
+          <widget class="QFrame" name="frameYQ">
+           <property name="styleSheet">
+            <string>QFrame { 
+                border: 1px solid #cccccc; 
+                border-radius: 3px; 
+                background-color: white; 
+                padding: 1px; 
+                min-width: 60px; 
+                min-height: 30px; 
+            }
+            QLabel { 
+                border: none;
+                background: transparent;
+            }</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayoutYQ">
+            <item>
+             <widget class="QLabel" name="labelYQTitle">
+              <property name="styleSheet">
+               <string>QLabel { font-weight: bold; color: #333333; }</string>
+              </property>
+              <property name="text">
+               <string>YQ</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelYQValue">
+              <property name="styleSheet">
+               <string>QLabel { color: #666666; }</string>
+              </property>
+              <property name="text">
+               <string>-9.99</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <!-- XP -->
+         <item row="2" column="0">
+          <widget class="QFrame" name="frameXP">
+           <property name="styleSheet">
+            <string>QFrame { 
+                border: 1px solid #cccccc; 
+                border-radius: 3px; 
+                background-color: white; 
+                padding: 1px; 
+                min-width: 60px; 
+                min-height: 30px; 
+            }
+            QLabel { 
+                border: none;
+                background: transparent;
+            }</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayoutXP">
+            <item>
+             <widget class="QLabel" name="labelXPTitle">
+              <property name="styleSheet">
+               <string>QLabel { font-weight: bold; color: #333333; }</string>
+              </property>
+              <property name="text">
+               <string>XP</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelXPValue">
+              <property name="styleSheet">
+               <string>QLabel { color: #666666; }</string>
+              </property>
+              <property name="text">
+               <string>-9.99</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <!-- YP -->
+         <item row="2" column="1">
+          <widget class="QFrame" name="frameYP">
+           <property name="styleSheet">
+            <string>QFrame { 
+                border: 1px solid #cccccc; 
+                border-radius: 3px; 
+                background-color: white; 
+                padding: 1px; 
+                min-width: 60px; 
+                min-height: 30px; 
+            }
+            QLabel { 
+                border: none;
+                background: transparent;
+            }</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayoutYP">
+            <item>
+             <widget class="QLabel" name="labelYPTitle">
+              <property name="styleSheet">
+               <string>QLabel { font-weight: bold; color: #333333; }</string>
+              </property>
+              <property name="text">
+               <string>YP</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelYPValue">
+              <property name="styleSheet">
+               <string>QLabel { color: #666666; }</string>
+              </property>
+              <property name="text">
+               <string>-9.99</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -275,7 +588,7 @@
           <item>
            <widget class="QLineEdit" name="lineEditVoltage">
             <property name="placeholderText">
-             <string>输入电压值(-9.99~9.99)</string>
+             <string>输入电压值 (-9.99~9.99)</string>
             </property>
            </widget>
           </item>

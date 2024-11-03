@@ -16,6 +16,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // 设置窗口图标
+    setWindowIcon(QIcon(":/images/icon.ico"));
+
+    // 设置打开串口按钮的初始样式为红色
+    ui->buttonTogglePort->setStyleSheet("background-color: #F44336;");
+
     // Populate serial port combo box
     refreshSerialPorts();
 
@@ -44,9 +50,12 @@ MainWindow::MainWindow(QWidget *parent)
     validator->setNotation(QDoubleValidator::StandardNotation);
     ui->lineEditVoltage->setValidator(validator);
 
-    // 初始化控制模式按钮
-    ui->buttonToggleMode->setStyleSheet("background-color: red");
+    // 初始化控制模式按钮和发送控制命令按钮
+    ui->buttonToggleMode->setEnabled(false);
+    ui->buttonToggleMode->setStyleSheet("background-color: #9E9E9E;"); // 灰色
     ui->buttonToggleMode->setText("手动模式");
+    ui->buttonSendControl->setEnabled(false);
+    ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
 }
 
 MainWindow::~MainWindow()
@@ -60,6 +69,10 @@ void MainWindow::toggleSerialPort()
         serial->close();
         ui->buttonTogglePort->setText("打开串口");
         ui->buttonTogglePort->setStyleSheet("background-color: #F44336;");
+        ui->buttonToggleMode->setEnabled(false);
+        ui->buttonToggleMode->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonSendControl->setEnabled(false);
+        ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
         QMessageBox::information(this, tr("成功"), tr("串口已关闭"));
     } else {
         serial->setPortName(ui->comboBoxPort->currentText());
@@ -72,6 +85,10 @@ void MainWindow::toggleSerialPort()
         if (serial->open(QIODevice::ReadWrite)) {
             ui->buttonTogglePort->setText("关闭串口");
             ui->buttonTogglePort->setStyleSheet("background-color: #4CAF50;");
+            ui->buttonToggleMode->setEnabled(true);
+            ui->buttonToggleMode->setStyleSheet("background-color: #F44336;"); // 红色
+            ui->buttonSendControl->setEnabled(true);
+            ui->buttonSendControl->setStyleSheet("background-color: #2196F3;"); // 蓝色
             QMessageBox::information(this, tr("成功"), tr("串口已打开"));
         } else {
             QMessageBox::critical(this, tr("错误"), serial->errorString());

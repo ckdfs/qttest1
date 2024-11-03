@@ -18,6 +18,9 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
+RESOURCES += \
+    resources.qrc
+
 QT += \
     serialport
 
@@ -25,3 +28,5 @@ QT += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32: RC_FILE = app.rc
