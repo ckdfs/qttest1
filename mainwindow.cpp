@@ -133,9 +133,9 @@ void MainWindow::refreshSerialPorts()
         QString aName = a.portName();
         QString bName = b.portName();
         if (aName.startsWith("ttyUSB") && bName.startsWith("ttyUSB")) {
-            return aName.midRef(6).toInt() < bName.midRef(6).toInt();
+            return aName.mid(6).toInt() < bName.mid(6).toInt();
         } else if (aName.startsWith("ttyACM") && bName.startsWith("ttyACM")) {
-            return aName.midRef(6).toInt() < bName.midRef(6).toInt();
+            return aName.mid(6).toInt() < bName.mid(6).toInt();
         }
         return aName < bName;
         #else
