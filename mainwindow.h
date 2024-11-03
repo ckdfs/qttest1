@@ -23,18 +23,22 @@ public:
 private slots:
     void toggleSerialPort();
     void refreshSerialPorts();
-    void sendSerialData();
     void readSerialData();
     void clearHistory();
     void processReceivedData();
+    void toggleControlMode();
+    void sendControlData();
+    void validateVoltageInput(const QString &text);
 
 private:
     Ui::MainWindow *ui;
     QSerialPort *serial;
     bool isSerialPortOpen;
+    bool isAutoMode;
     QByteArray receiveBuffer;
     QTimer *receiveTimer;
     static const int RECEIVE_TIMEOUT = 50;
+    QByteArray packProtocolData(bool isAuto, double voltage, int channel);
 };
 
 #endif // MAINWINDOW_H
