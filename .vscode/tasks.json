@@ -113,6 +113,44 @@
             "args": [
                 "clean"
             ]
+        },
+        {
+            "label": "package-release",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "windows": {
+                "command": "cmd",
+                "args": [
+                    "/C",
+                    "mkdir deploy & copy build\\release\\qttest1.exe deploy\\ & set PATH=%PATH%;C:\\Qt\\6.8.0\\mingw_64\\bin & cd deploy & windeployqt qttest1.exe"
+                ]
+            },
+            "dependsOn": [
+                "make-release"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "clean-deploy",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-NoProfile",
+                    "-ExecutionPolicy", "Bypass",
+                    "-Command",
+                    "Remove-Item -Recurse -Force deploy"
+                ]
+            }
         }
     ]
 }
