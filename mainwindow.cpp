@@ -203,10 +203,10 @@ void MainWindow::processReceivedData()
     QString data = QString::fromUtf8(receiveBuffer);
     ui->textEditHistory->append("[" + timestamp + "] 接收: " + data);
 
-    // 检查数据是否以"Bias Voltage"开头
+    // 检查数据是否以"Bias Voltage:"开头
     if (data.startsWith("Bias Voltage")) {
-        // 移除"Bias Voltage"前缀并分割数据
-        QString values = data.mid(13).trimmed(); // "Bias Voltage:".length() == 12
+        // 移除"Bias Voltage:"前缀并分割数据
+        QString values = data.mid(13).trimmed(); // "Bias Voltage:".length() == 13
         QStringList voltages = values.split(",", Qt::SkipEmptyParts); // 跳过空字符串
         
         // 确保有6个数据
