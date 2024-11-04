@@ -87,18 +87,27 @@ void MainWindow::toggleSerialPort()
         ui->buttonToggleMode->setStyleSheet("background-color: #9E9E9E;"); // 灰色
         ui->buttonSendControl->setEnabled(false);
         ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        
+        // 启用串口设置控件
+        ui->comboBoxPort->setEnabled(true);
+        ui->comboBoxBaudRate->setEnabled(true);
+        ui->comboBoxDataBits->setEnabled(true);
+        ui->comboBoxParity->setEnabled(true);
+        ui->comboBoxStopBits->setEnabled(true);
+        ui->buttonRefreshPorts->setEnabled(true);
+        ui->buttonRefreshPorts->setStyleSheet(""); // 恢复默认样式
+        
         QMessageBox::information(this, tr("成功"), tr("串口已关闭"));
     } else {
+        QString portName = ui->comboBoxPort->currentText();  // 直接使用显示的文本
+        
         #ifdef Q_OS_LINUX
-        // Linux下需要去掉"/dev/"前缀
-        QString portName = ui->comboBoxPort->currentText();
         if (portName.startsWith("/dev/")) {
             portName = portName.mid(5);
         }
-        serial->setPortName(portName);
-        #else
-        serial->setPortName(ui->comboBoxPort->currentText());
         #endif
+        
+        serial->setPortName(portName);
         
         serial->setBaudRate(ui->comboBoxBaudRate->currentText().toInt());
         serial->setDataBits(static_cast<QSerialPort::DataBits>(ui->comboBoxDataBits->currentText().toInt()));
@@ -113,6 +122,16 @@ void MainWindow::toggleSerialPort()
             ui->buttonToggleMode->setStyleSheet("background-color: #F44336;"); // 红色
             ui->buttonSendControl->setEnabled(true);
             ui->buttonSendControl->setStyleSheet("background-color: #2196F3;"); // 蓝色
+            
+            // 禁用串口设置控件
+            ui->comboBoxPort->setEnabled(false);
+            ui->comboBoxBaudRate->setEnabled(false);
+            ui->comboBoxDataBits->setEnabled(false);
+            ui->comboBoxParity->setEnabled(false);
+            ui->comboBoxStopBits->setEnabled(false);
+            ui->buttonRefreshPorts->setEnabled(false);
+            ui->buttonRefreshPorts->setStyleSheet("background-color: #9E9E9E;"); // 设置为灰色
+            
             QMessageBox::information(this, tr("成功"), tr("串口已打开"));
         } else {
             QMessageBox::critical(this, tr("错误"), serial->errorString());
@@ -129,7 +148,6 @@ void MainWindow::refreshSerialPorts()
     // 自定义排序函数
     std::sort(ports.begin(), ports.end(), [](const QSerialPortInfo &a, const QSerialPortInfo &b) {
         #ifdef Q_OS_LINUX
-        // Linux下的串口设备名格式为 ttyUSB0, ttyACM0 等
         QString aName = a.portName();
         QString bName = b.portName();
         if (aName.startsWith("ttyUSB") && bName.startsWith("ttyUSB")) {
@@ -139,7 +157,6 @@ void MainWindow::refreshSerialPorts()
         }
         return aName < bName;
         #else
-        // Windows下保持原有的COM口排序
         QString aName = a.portName().toLower();
         QString bName = b.portName().toLower();
         aName.remove("com");
@@ -149,13 +166,15 @@ void MainWindow::refreshSerialPorts()
     });
     
     foreach (const QSerialPortInfo &info, ports) {
+        QString portName;
+        
         #ifdef Q_OS_LINUX
-        // Linux下显示完整设备路径
-        ui->comboBoxPort->addItem("/dev/" + info.portName());
+        portName = "/dev/" + info.portName();
         #else
-        // Windows下保持原有显示方式
-        ui->comboBoxPort->addItem(info.portName());
+        portName = info.portName();
         #endif
+        
+        ui->comboBoxPort->addItem(portName);
     }
 
     if (ui->comboBoxPort->count() > 0) {
@@ -180,7 +199,27 @@ void MainWindow::processReceivedData()
     }
 
     QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
-    ui->textEditHistory->append("[" + timestamp + "] 接收: " + QString::fromUtf8(receiveBuffer));
+    QString data = QString::fromUtf8(receiveBuffer);
+    ui->textEditHistory->append("[" + timestamp + "] 接收: " + data);
+
+    // 检查数据是否以"Bias Voltage"开头
+    if (data.startsWith("Bias Voltage")) {
+        // 移除"Bias Voltage"前缀并分割数据
+        QString values = data.mid(13).trimmed(); // "Bias Voltage:".length() == 12
+        QStringList voltages = values.split(",", Qt::SkipEmptyParts); // 跳过空字符串
+        
+        // 确保有6个数据
+        if (voltages.size() == 6) {
+            // 更新UI显示，按XI,XQ,XP,YI,YQ,YP的顺序
+            ui->labelXIValue->setText(voltages[0].trimmed());  // 添加trimmed()去除每个值可能的空白字符
+            ui->labelXQValue->setText(voltages[1].trimmed());
+            ui->labelXPValue->setText(voltages[2].trimmed());
+            ui->labelYIValue->setText(voltages[3].trimmed());
+            ui->labelYQValue->setText(voltages[4].trimmed());
+            ui->labelYPValue->setText(voltages[5].trimmed());
+        }
+    }
+
     receiveBuffer.clear();
 }
 
@@ -197,6 +236,8 @@ void MainWindow::toggleControlMode()
         ui->buttonToggleMode->setStyleSheet("background-color: #4CAF50;");
         ui->comboBoxChannel->setEnabled(false);
         ui->lineEditVoltage->setEnabled(false);
+        ui->buttonSendControl->setEnabled(false);  // 禁用发送控制命令按钮
+        ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
         
         // 发送自动模式切换命令
         if (serial->isOpen()) {
@@ -210,6 +251,8 @@ void MainWindow::toggleControlMode()
         ui->buttonToggleMode->setStyleSheet("background-color: #F44336;");
         ui->comboBoxChannel->setEnabled(true);
         ui->lineEditVoltage->setEnabled(true);
+        ui->buttonSendControl->setEnabled(true);  // 启用发送控制命令按钮
+        ui->buttonSendControl->setStyleSheet("background-color: #2196F3;"); // 蓝色
     }
 }
 

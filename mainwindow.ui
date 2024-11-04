@@ -663,9 +663,23 @@
            </widget>
           </item>
           <item>
+           <widget class="QLabel" name="labelChannel">
+            <property name="text">
+             <string>通道：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QComboBox" name="comboBoxChannel">
             <property name="minimumWidth">
              <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelVoltage">
+            <property name="text">
+             <string>电压：</string>
             </property>
            </widget>
           </item>
