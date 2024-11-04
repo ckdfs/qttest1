@@ -330,7 +330,7 @@
                <string>QLabel { color: #666666; }</string>
               </property>
               <property name="text">
-               <string>-9.99</string>
+               <string>None</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -377,7 +377,7 @@
                <string>QLabel { color: #666666; }</string>
               </property>
               <property name="text">
-               <string>-9.99</string>
+               <string>None</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -424,7 +424,7 @@
                <string>QLabel { color: #666666; }</string>
               </property>
               <property name="text">
-               <string>-9.99</string>
+               <string>None</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -471,7 +471,7 @@
                <string>QLabel { color: #666666; }</string>
               </property>
               <property name="text">
-               <string>-9.99</string>
+               <string>None</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -518,7 +518,7 @@
                <string>QLabel { color: #666666; }</string>
               </property>
               <property name="text">
-               <string>-9.99</string>
+               <string>None</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -565,7 +565,7 @@
                <string>QLabel { color: #666666; }</string>
               </property>
               <property name="text">
-               <string>-9.99</string>
+               <string>None</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
