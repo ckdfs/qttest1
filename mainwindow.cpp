@@ -262,6 +262,14 @@ void MainWindow::toggleControlMode()
         ui->lineEditVoltage->setEnabled(true);
         ui->buttonSendControl->setEnabled(true);  // 启用发送控制命令按钮
         ui->buttonSendControl->setStyleSheet("background-color: #2196F3;"); // 蓝色
+
+        // 发送手动模式切换命令
+        if (serial->isOpen()) {
+            QByteArray data = "200000";
+            serial->write(data);
+            QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
+            ui->textEditHistory->append("[" + timestamp + "] 发送手动模式命令: " + data);
+        }
     }
 }
 
