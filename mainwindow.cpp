@@ -199,25 +199,33 @@ void MainWindow::processReceivedData()
         return;
     }
 
-    QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
     QString data = QString::fromUtf8(receiveBuffer);
-    ui->textEditHistory->append("[" + timestamp + "] 接收: " + data);
+    QStringList lines = data.split('\n', Qt::SkipEmptyParts);  // 按行分割数据
+    QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
 
-    // 检查数据是否以"Bias Voltage:"开头
-    if (data.startsWith("Bias Voltage")) {
-        // 移除"Bias Voltage:"前缀并分割数据
-        QString values = data.mid(13).trimmed(); // "Bias Voltage:".length() == 13
-        QStringList voltages = values.split(",", Qt::SkipEmptyParts); // 跳过空字符串
-        
-        // 确保有6个数据
-        if (voltages.size() == 6) {
-            // 更新UI显示，按XI,XQ,XP,YI,YQ,YP的顺序
-            ui->labelXIValue->setText(voltages[0].trimmed());  // 添加trimmed()去除每个值可能的空白字符
-            ui->labelXQValue->setText(voltages[1].trimmed());
-            ui->labelXPValue->setText(voltages[2].trimmed());
-            ui->labelYIValue->setText(voltages[3].trimmed());
-            ui->labelYQValue->setText(voltages[4].trimmed());
-            ui->labelYPValue->setText(voltages[5].trimmed());
+    foreach(QString line, lines) {
+        line = line.trimmed();  // 移除每行首尾的空白字符
+        if (line.isEmpty()) continue;
+
+        // 显示接收到的数据
+        ui->textEditHistory->append("[" + timestamp + "] 接收: " + line);
+
+        // 检查数据是否以"Bias Voltage"开头
+        if (line.startsWith("Bias Voltage")) {
+            // 移除"Bias Voltage:"前缀并分割数据
+            QString values = line.mid(13).trimmed(); // "Bias Voltage:".length() == 13
+            QStringList voltages = values.split(",", Qt::SkipEmptyParts); // 跳过空字符串
+            
+            // 确保有6个数据
+            if (voltages.size() == 6) {
+                // 更新UI显示，按XI,XQ,XP,YI,YQ,YP的顺序
+                ui->labelXIValue->setText(voltages[0].trimmed());
+                ui->labelXQValue->setText(voltages[1].trimmed());
+                ui->labelXPValue->setText(voltages[2].trimmed());
+                ui->labelYIValue->setText(voltages[3].trimmed());
+                ui->labelYQValue->setText(voltages[4].trimmed());
+                ui->labelYPValue->setText(voltages[5].trimmed());
+            }
         }
     }
 
