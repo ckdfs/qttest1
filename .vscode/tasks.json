@@ -21,7 +21,7 @@
             "options": {
                 "cwd": "${workspaceFolder}/build"
             },
-            "command": "qmake",
+            "command": "C:/Qt/5.15.2/mingw81_64/bin/qmake.exe",
             "args": [
                 "../${workspaceFolderBasename}.pro",
                 "-spec",
@@ -39,7 +39,7 @@
             "options": {
                 "cwd": "${workspaceFolder}/build"
             },
-            "command": "mingw32-make",
+            "command": "C:/Qt/5.15.2/mingw81_64/bin/mingw32-make.exe",
             "args": [
                 "-f",
                 "Makefile.Debug",
@@ -67,7 +67,7 @@
             "options": {
                 "cwd": "${workspaceFolder}/build"
             },
-            "command": "qmake",
+            "command": "C:/Qt/5.15.2/mingw81_64/bin/qmake.exe",
             "args": [
                 "../${workspaceFolderBasename}.pro",
                 "-spec",
@@ -82,12 +82,13 @@
             "options": {
                 "cwd": "${workspaceFolder}/build"
             },
-            "command": "mingw32-make",
-            "args": [
-                "-f",
-                "Makefile.Release",
-                "-j18"
-            ],
+            "windows": {
+                "command": "cmd",
+                "args": [
+                    "/C",
+                    "set PATH=C:\\Qt\\5.15.2\\mingw81_64\\bin;%PATH% && mingw32-make.exe -f Makefile.Release -j18"
+                ]
+            },
             "dependsOn": [
                 "qmake-release"
             ]
@@ -124,7 +125,7 @@
                 "command": "cmd",
                 "args": [
                     "/C",
-                    "mkdir deploy & copy build\\release\\qttest1.exe deploy\\ & set PATH=%PATH%;C:\\Qt\\6.8.0\\mingw_64\\bin & cd deploy & windeployqt qttest1.exe"
+                    "set PATH=C:\\Qt\\5.15.2\\mingw81_64\\bin;%PATH% && mkdir deploy & copy build\\release\\qttest1.exe deploy\\ & cd deploy & C:\\Qt\\5.15.2\\mingw81_64\\bin\\windeployqt.exe --release --no-translations --no-system-d3d-compiler --no-opengl-sw qttest1.exe & copy C:\\Qt\\5.15.2\\mingw81_64\\bin\\Qt5Core.dll . & copy C:\\Qt\\5.15.2\\mingw81_64\\bin\\Qt5Gui.dll . & copy C:\\Qt\\5.15.2\\mingw81_64\\bin\\Qt5Widgets.dll . & copy C:\\Qt\\5.15.2\\mingw81_64\\bin\\Qt5SerialPort.dll . & copy C:\\Qt\\5.15.2\\mingw81_64\\bin\\libgcc_s_seh-1.dll . & copy C:\\Qt\\5.15.2\\mingw81_64\\bin\\libstdc++-6.dll . & copy C:\\Qt\\5.15.2\\mingw81_64\\bin\\libwinpthread-1.dll . & mkdir platforms & copy C:\\Qt\\5.15.2\\mingw81_64\\plugins\\platforms\\qwindows.dll platforms\\"
                 ]
             },
             "dependsOn": [

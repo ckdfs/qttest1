@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>串口调试助手</string>
+   <string>偏压调试助手-Win7兼容版</string>
   </property>
   <property name="styleSheet">
    <string>
@@ -293,7 +293,7 @@
          <property name="spacing">
           <number>10</number>
          </property>
-         <!-- XI -->
+         <!-- X主 -->
          <item row="0" column="0">
           <widget class="QFrame" name="frameXI">
            <property name="styleSheet">
@@ -317,7 +317,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>XI</string>
+               <string>X主</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -340,7 +340,7 @@
            </layout>
           </widget>
          </item>
-         <!-- YI -->
+         <!-- Y主 -->
          <item row="0" column="1">
           <widget class="QFrame" name="frameYI">
            <property name="styleSheet">
@@ -364,7 +364,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>YI</string>
+               <string>Y主</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -387,7 +387,7 @@
            </layout>
           </widget>
          </item>
-         <!-- XQ -->
+         <!-- X上 -->
          <item row="1" column="0">
           <widget class="QFrame" name="frameXQ">
            <property name="styleSheet">
@@ -411,7 +411,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>XQ</string>
+               <string>X上</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -434,7 +434,7 @@
            </layout>
           </widget>
          </item>
-         <!-- YQ -->
+         <!-- Y上 -->
          <item row="1" column="1">
           <widget class="QFrame" name="frameYQ">
            <property name="styleSheet">
@@ -458,7 +458,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>YQ</string>
+               <string>Y上</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -481,7 +481,7 @@
            </layout>
           </widget>
          </item>
-         <!-- XP -->
+         <!-- X主 -->
          <item row="2" column="0">
           <widget class="QFrame" name="frameXP">
            <property name="styleSheet">
@@ -505,7 +505,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>XP</string>
+               <string>X主</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -528,7 +528,7 @@
            </layout>
           </widget>
          </item>
-         <!-- YP -->
+         <!-- Y主 -->
          <item row="2" column="1">
           <widget class="QFrame" name="frameYP">
            <property name="styleSheet">
@@ -552,7 +552,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>YP</string>
+               <string>Y主</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>

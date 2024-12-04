@@ -44,12 +44,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 初始化通道选择下拉框
     QMap<int, QString> channelMap;
-    channelMap[2] = "YQ";
-    channelMap[3] = "YI";
-    channelMap[4] = "XQ";
-    channelMap[5] = "XI";
-    channelMap[6] = "YP";
-    channelMap[7] = "XP";
+    channelMap[2] = "Y上";
+    channelMap[3] = "Y下";
+    channelMap[4] = "X上";
+    channelMap[5] = "X下";
+    channelMap[6] = "Y主";
+    channelMap[7] = "X主";
     
     for(int i = 2; i <= 7; i++) {
         ui->comboBoxChannel->addItem(channelMap[i], i);  // 显示文本为映射值，实际值为通道号
