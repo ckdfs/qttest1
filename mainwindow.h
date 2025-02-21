@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QTimer>
+#include <QLineEdit>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,7 +29,10 @@ private slots:
     void processReceivedData();
     void toggleControlMode();
     void sendControlData();
-    void validateVoltageInput(const QString &text);
+    void sendChannelControlData(int channel, double voltage);
+    void validateVoltageInput(QLineEdit *lineEdit, const QString &text);
+    void onVoltageInputChanged(const QString &text);
+    void onVoltageButtonClicked();
     // void updateCurrentVoltage();
 
 private:

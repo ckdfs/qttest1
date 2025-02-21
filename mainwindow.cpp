@@ -64,12 +64,34 @@ MainWindow::MainWindow(QWidget *parent)
     // 连接新的信号槽
     connect(ui->buttonToggleMode, &QPushButton::clicked, this, &MainWindow::toggleControlMode);
     connect(ui->buttonSendControl, &QPushButton::clicked, this, &MainWindow::sendControlData);
-    connect(ui->lineEditVoltage, &QLineEdit::textChanged, this, &MainWindow::validateVoltageInput);
+    connect(ui->lineEditVoltage, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
 
     // 设置电压输入验证器
     QDoubleValidator *validator = new QDoubleValidator(-9.99, 9.99, 2, this);
     validator->setNotation(QDoubleValidator::StandardNotation);
     ui->lineEditVoltage->setValidator(validator);
+    ui->lineEditInitialValueYQ->setValidator(validator);
+    ui->lineEditInitialValueYI->setValidator(validator);
+    ui->lineEditInitialValueXQ->setValidator(validator);
+    ui->lineEditInitialValueXI->setValidator(validator);
+    ui->lineEditInitialValueYP->setValidator(validator);
+    ui->lineEditInitialValueXP->setValidator(validator);
+
+    // 连接其他输入框的信号槽
+    connect(ui->lineEditInitialValueYQ, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    connect(ui->lineEditInitialValueYI, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    connect(ui->lineEditInitialValueXQ, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    connect(ui->lineEditInitialValueXI, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    connect(ui->lineEditInitialValueYP, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    connect(ui->lineEditInitialValueXP, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+
+    // 连接增减按钮的信号槽
+    connect(ui->buttonVoltageMinus0, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
+    connect(ui->buttonVoltageMinus1, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
+    connect(ui->buttonVoltageMinus2, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
+    connect(ui->buttonVoltagePlus2, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
+    connect(ui->buttonVoltagePlus1, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
+    connect(ui->buttonVoltagePlus0, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
 
     // 初始化控制模式按钮和发送控制命令按钮
     ui->buttonToggleMode->setEnabled(false);
@@ -78,6 +100,21 @@ MainWindow::MainWindow(QWidget *parent)
     ui->buttonSendControl->setEnabled(false);
     ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
     ui->comboBoxChannel->setEnabled(false);
+
+    // 禁用增减按钮
+    ui->buttonVoltageMinus0->setEnabled(false);
+    ui->buttonVoltageMinus0->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+    ui->buttonVoltageMinus1->setEnabled(false);
+    ui->buttonVoltageMinus1->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+    ui->buttonVoltageMinus2->setEnabled(false);
+    ui->buttonVoltageMinus2->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+    ui->buttonVoltagePlus2->setEnabled(false);
+    ui->buttonVoltagePlus2->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+    ui->buttonVoltagePlus1->setEnabled(false);
+    ui->buttonVoltagePlus1->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+    ui->buttonVoltagePlus0->setEnabled(false);
+    ui->buttonVoltagePlus0->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+    ui->lineEditVoltage->setEnabled(false);
 
     // 更新当前偏压显示
     updateCurrentVoltage();
@@ -98,6 +135,21 @@ void MainWindow::toggleSerialPort()
         ui->buttonToggleMode->setStyleSheet("background-color: #9E9E9E;"); // 灰色
         ui->buttonSendControl->setEnabled(false);
         ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+
+        // 禁用增减按钮
+        ui->buttonVoltageMinus0->setEnabled(false);
+        ui->buttonVoltageMinus0->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltageMinus1->setEnabled(false);
+        ui->buttonVoltageMinus1->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltageMinus2->setEnabled(false);
+        ui->buttonVoltageMinus2->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltagePlus2->setEnabled(false);
+        ui->buttonVoltagePlus2->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltagePlus1->setEnabled(false);
+        ui->buttonVoltagePlus1->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltagePlus0->setEnabled(false);
+        ui->buttonVoltagePlus0->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->lineEditVoltage->setEnabled(false);
         
         // 启用串口设置控件
         ui->comboBoxPort->setEnabled(true);
@@ -134,6 +186,21 @@ void MainWindow::toggleSerialPort()
             ui->buttonToggleMode->setStyleSheet("background-color: #F44336;"); // 红色
             ui->buttonSendControl->setEnabled(true);
             ui->buttonSendControl->setStyleSheet("background-color: #2196F3;"); // 蓝色
+
+            // 启用增减按钮
+            ui->buttonVoltageMinus0->setEnabled(true);
+            ui->buttonVoltageMinus0->setStyleSheet(""); // 恢复默认样式
+            ui->buttonVoltageMinus1->setEnabled(true);
+            ui->buttonVoltageMinus1->setStyleSheet(""); // 恢复默认样式
+            ui->buttonVoltageMinus2->setEnabled(true);
+            ui->buttonVoltageMinus2->setStyleSheet(""); // 恢复默认样式
+            ui->buttonVoltagePlus2->setEnabled(true);
+            ui->buttonVoltagePlus2->setStyleSheet(""); // 恢复默认样式
+            ui->buttonVoltagePlus1->setEnabled(true);
+            ui->buttonVoltagePlus1->setStyleSheet(""); // 恢复默认样式
+            ui->buttonVoltagePlus0->setEnabled(true);
+            ui->buttonVoltagePlus0->setStyleSheet(""); // 恢复默认样式
+            ui->lineEditVoltage->setEnabled(true);
             
             // 禁用串口设置控件
             ui->comboBoxPort->setEnabled(false);
@@ -270,6 +337,19 @@ void MainWindow::toggleControlMode()
         ui->lineEditVoltage->setEnabled(false);
         ui->buttonSendControl->setEnabled(false);  // 禁用发送控制命令按钮
         ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltageMinus0->setEnabled(false);
+        ui->buttonVoltageMinus0->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltageMinus1->setEnabled(false);
+        ui->buttonVoltageMinus1->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltageMinus2->setEnabled(false);
+        ui->buttonVoltageMinus2->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltagePlus2->setEnabled(false);
+        ui->buttonVoltagePlus2->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltagePlus1->setEnabled(false);
+        ui->buttonVoltagePlus1->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->buttonVoltagePlus0->setEnabled(false);
+        ui->buttonVoltagePlus0->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+        ui->lineEditVoltage->setEnabled(false);
         
         // 发送自动模式切换命令
         if (serial->isOpen()) {
@@ -285,6 +365,19 @@ void MainWindow::toggleControlMode()
         ui->lineEditVoltage->setEnabled(true);
         ui->buttonSendControl->setEnabled(true);  // 启用发送控制命令按钮
         ui->buttonSendControl->setStyleSheet("background-color: #2196F3;"); // 蓝色
+        ui->buttonVoltageMinus0->setEnabled(true);
+        ui->buttonVoltageMinus0->setStyleSheet(""); // 恢复默认样式
+        ui->buttonVoltageMinus1->setEnabled(true);
+        ui->buttonVoltageMinus1->setStyleSheet(""); // 恢复默认样式
+        ui->buttonVoltageMinus2->setEnabled(true);
+        ui->buttonVoltageMinus2->setStyleSheet(""); // 恢复默认样式
+        ui->buttonVoltagePlus2->setEnabled(true);
+        ui->buttonVoltagePlus2->setStyleSheet(""); // 恢复默认样式
+        ui->buttonVoltagePlus1->setEnabled(true);
+        ui->buttonVoltagePlus1->setStyleSheet(""); // 恢复默认样式
+        ui->buttonVoltagePlus0->setEnabled(true);
+        ui->buttonVoltagePlus0->setStyleSheet(""); // 恢复默认样式
+        ui->lineEditVoltage->setEnabled(true);
 
         // 发送手动模式切换命令
         if (serial->isOpen()) {
@@ -296,32 +389,44 @@ void MainWindow::toggleControlMode()
     }
 }
 
-void MainWindow::validateVoltageInput(const QString &text)
+void MainWindow::validateVoltageInput(QLineEdit *lineEdit, const QString &text)
 {
     if (!text.isEmpty()) {
         bool ok;
         double value = text.toDouble(&ok);
         if (!ok || value < -9.99 || value > 9.99) {
-            ui->lineEditVoltage->setStyleSheet("background-color: #FFEBEE; border-color: #F44336;");
+            lineEdit->setStyleSheet("background-color: #FFEBEE; border-color: #F44336;");
         } else {
-            ui->lineEditVoltage->setStyleSheet("");
+            lineEdit->setStyleSheet("");
         }
+    }
+}
+
+void MainWindow::onVoltageInputChanged(const QString &text)
+{
+    QLineEdit *lineEdit = qobject_cast<QLineEdit *>(sender());
+    if (lineEdit) {
+        validateVoltageInput(lineEdit, text);
     }
 }
 
 void MainWindow::sendControlData()
 {
+    int channel = ui->comboBoxChannel->currentData().toInt();
+    double voltage = ui->lineEditVoltage->text().toDouble();
+    sendChannelControlData(channel, voltage);
+}
+
+void MainWindow::sendChannelControlData(int channel, double voltage)
+{
     if (!serial->isOpen()) {
         QMessageBox::warning(this, tr("错误"), tr("串口未打开"));
         return;
     }
-    
-    int channel = ui->comboBoxChannel->currentData().toInt();
-    double voltage = ui->lineEditVoltage->text().toDouble();
-    
+
     QByteArray data = packProtocolData(isAutoMode, voltage, channel);
     serial->write(data);
-    
+
     QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
     ui->textEditHistory->append("[" + timestamp + "] 发送控制命令: " + QString::fromUtf8(data));
 }
@@ -362,4 +467,36 @@ void MainWindow::updateCurrentVoltage()
     double voltage = channelVoltages.value(channel, 0.0);
     ui->labelCurrentVoltage->setText(QString("当前偏压：%1").arg(voltage, 0, 'f', 2));
     ui->lineEditVoltage->setText(QString::number(voltage, 'f', 2));
+}
+
+void MainWindow::onVoltageButtonClicked()
+{
+    QPushButton *button = qobject_cast<QPushButton *>(sender());
+    if (!button) return;
+
+    int channel = ui->comboBoxChannel->currentData().toInt();
+    double voltage = channelVoltages.value(channel, 0.0);
+
+    if (button == ui->buttonVoltageMinus0) {
+        voltage -= 1.0;
+    } else if (button == ui->buttonVoltageMinus1) {
+        voltage -= 0.1;
+    } else if (button == ui->buttonVoltageMinus2) {
+        voltage -= 0.01;
+    } else if (button == ui->buttonVoltagePlus2) {
+        voltage += 0.01;
+    } else if (button == ui->buttonVoltagePlus1) {
+        voltage += 0.1;
+    } else if (button == ui->buttonVoltagePlus0) {
+        voltage += 1.0;
+    }
+
+    // 限制电压值范围
+    if (voltage < -9.99) voltage = -9.99;
+    if (voltage > 9.99) voltage = 9.99;
+
+    // channelVoltages[channel] = voltage;
+    sendChannelControlData(channel, voltage);
+
+    updateCurrentVoltage();
 }
