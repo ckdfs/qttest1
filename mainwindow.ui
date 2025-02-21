@@ -317,7 +317,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>XI</string>
+               <string>X上</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -364,7 +364,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>YI</string>
+               <string>Y上</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -411,7 +411,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>XQ</string>
+               <string>X下</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -458,7 +458,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>YQ</string>
+               <string>Y下</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -505,7 +505,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>XP</string>
+               <string>X主</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -552,7 +552,7 @@
                <string>QLabel { font-weight: bold; color: #333333; }</string>
               </property>
               <property name="text">
-               <string>YP</string>
+               <string>Y主</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -649,6 +649,80 @@
        </widget>
       </item>
       <item>
+        <layout class="QHBoxLayout" name="horizontalControlLayout">
+        <property name="spacing">
+          <number>10</number>
+        </property>
+        <item>
+          <widget class="QPushButton" name="buttonSetInitialValue">
+          <property name="text">
+            <string>设定初值</string>
+          </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLabel" name="labelInitialYQ">
+          <property name="text">
+            <string>Y下</string>
+          </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLineEdit" name="lineEditInitialValueYQ"> </widget>
+        </item>
+        <item>
+          <widget class="QLabel" name="labelInitialYI">
+          <property name="text">
+            <string>Y上</string>
+          </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLineEdit" name="lineEditInitialValueYI"> </widget>
+        </item>
+        <item>
+          <widget class="QLabel" name="labelInitialXQ">
+          <property name="text">
+            <string>X下</string>
+          </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLineEdit" name="lineEditInitialValueXQ"> </widget>
+        </item>
+        <item>
+          <widget class="QLabel" name="labelInitialXI">
+          <property name="text">
+            <string>X上</string>
+          </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLineEdit" name="lineEditInitialValueXI"> </widget>
+        </item>
+        <item>
+          <widget class="QLabel" name="labelInitialYP">
+          <property name="text">
+            <string>Y主</string>
+          </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLineEdit" name="lineEditInitialValueYP"> </widget>
+        </item>
+        <item>
+          <widget class="QLabel" name="labelInitialXP">
+          <property name="text">
+            <string>X主</string>
+          </property>
+          </widget>
+        </item>
+        <item>
+          <widget class="QLineEdit" name="lineEditInitialValueXP"> </widget>
+        </item>
+        </layout>
+      </item>
+      <item>
        <layout class="QVBoxLayout" name="controlLayout">
         <item>
          <layout class="QHBoxLayout" name="horizontalControlLayout">
@@ -665,7 +739,7 @@
           <item>
            <widget class="QLabel" name="labelChannel">
             <property name="text">
-             <string>通道：</string>
+             <string>通道</string>
             </property>
            </widget>
           </item>
@@ -679,16 +753,37 @@
           <item>
            <widget class="QLabel" name="labelVoltage">
             <property name="text">
-             <string>电压：</string>
+             <string>偏压</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLineEdit" name="lineEditVoltage">
             <property name="placeholderText">
-             <string>输入电压值 (-9.99~9.99)</string>
+             <string>输入偏压值 (-9.99~9.99)</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelCurrentVoltage">
+            <property name="text">
+             <string>当前偏压：0.00</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonVoltageReduce">
+              <property name="text">
+              <string>-0.01</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonVoltageAdd">
+              <property name="text">
+              <string>+0.01</string>
+              </property>
+            </widget>
           </item>
          </layout>
         </item>
