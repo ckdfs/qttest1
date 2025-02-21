@@ -17,6 +17,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // 初始化偏压值
+    for (int i = 2; i <= 7; ++i) {
+        channelVoltages[i] = 0.0;
+    }
+
     // 设置窗口图标
     setWindowIcon(QIcon(":/images/icon.ico"));
 
@@ -37,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonRefreshPorts, &QPushButton::clicked, this, &MainWindow::refreshSerialPorts);
     connect(ui->buttonClearHistory, &QPushButton::clicked, this, &MainWindow::clearHistory);
     connect(serial, &QSerialPort::readyRead, this, &MainWindow::readSerialData);
+    connect(ui->comboBoxChannel, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::updateCurrentVoltage);
 
     // 初始化接收定时器
     receiveTimer->setSingleShot(true);
@@ -71,6 +77,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->buttonToggleMode->setText("手动模式");
     ui->buttonSendControl->setEnabled(false);
     ui->buttonSendControl->setStyleSheet("background-color: #9E9E9E;"); // 灰色
+    ui->comboBoxChannel->setEnabled(false);
+
+    // 更新当前偏压显示
+    updateCurrentVoltage();
 }
 
 MainWindow::~MainWindow()
@@ -97,6 +107,7 @@ void MainWindow::toggleSerialPort()
         ui->comboBoxStopBits->setEnabled(true);
         ui->buttonRefreshPorts->setEnabled(true);
         ui->buttonRefreshPorts->setStyleSheet(""); // 恢复默认样式
+        ui->comboBoxChannel->setEnabled(false);
         
         QMessageBox::information(this, tr("成功"), tr("串口已关闭"));
     } else {
@@ -132,6 +143,7 @@ void MainWindow::toggleSerialPort()
             ui->comboBoxStopBits->setEnabled(false);
             ui->buttonRefreshPorts->setEnabled(false);
             ui->buttonRefreshPorts->setStyleSheet("background-color: #9E9E9E;"); // 设置为灰色
+            ui->comboBoxChannel->setEnabled(true);
             
             QMessageBox::information(this, tr("成功"), tr("串口已打开"));
         } else {
@@ -225,6 +237,17 @@ void MainWindow::processReceivedData()
                 ui->labelYIValue->setText(voltages[3].trimmed());
                 ui->labelYQValue->setText(voltages[4].trimmed());
                 ui->labelYPValue->setText(voltages[5].trimmed());
+
+                // 更新存储的偏压值
+                channelVoltages[5] = voltages[0].toDouble();
+                channelVoltages[4] = voltages[1].toDouble();
+                channelVoltages[7] = voltages[2].toDouble();
+                channelVoltages[3] = voltages[3].toDouble();
+                channelVoltages[2] = voltages[4].toDouble();
+                channelVoltages[6] = voltages[5].toDouble();
+
+                // 更新当前偏压显示
+                updateCurrentVoltage();
             }
         }
     }
@@ -331,4 +354,12 @@ QByteArray MainWindow::packProtocolData(bool isAuto, double voltage, int channel
     data.append('0' + static_cast<char>(decimal2));
     
     return data;
+}
+
+void MainWindow::updateCurrentVoltage()
+{
+    int channel = ui->comboBoxChannel->currentData().toInt();
+    double voltage = channelVoltages.value(channel, 0.0);
+    ui->labelCurrentVoltage->setText(QString("当前偏压：%1").arg(voltage, 0, 'f', 2));
+    ui->lineEditVoltage->setText(QString::number(voltage, 'f', 2));
 }

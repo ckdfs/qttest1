@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>串口调试助手</string>
+   <string>偏压调试助手</string>
   </property>
   <property name="styleSheet">
    <string>
@@ -668,7 +668,11 @@
           </widget>
         </item>
         <item>
-          <widget class="QLineEdit" name="lineEditInitialValueYQ"> </widget>
+          <widget class="QLineEdit" name="lineEditInitialValueYQ">
+            <property name="placeholderText">
+             <string>-9.99~9.99</string>
+            </property>
+          </widget>
         </item>
         <item>
           <widget class="QLabel" name="labelInitialYI">
@@ -678,7 +682,11 @@
           </widget>
         </item>
         <item>
-          <widget class="QLineEdit" name="lineEditInitialValueYI"> </widget>
+          <widget class="QLineEdit" name="lineEditInitialValueYI">
+            <property name="placeholderText">
+             <string>-9.99~9.99</string>
+            </property>
+          </widget>
         </item>
         <item>
           <widget class="QLabel" name="labelInitialXQ">
@@ -688,7 +696,11 @@
           </widget>
         </item>
         <item>
-          <widget class="QLineEdit" name="lineEditInitialValueXQ"> </widget>
+          <widget class="QLineEdit" name="lineEditInitialValueXQ">
+            <property name="placeholderText">
+             <string>-9.99~9.99</string>
+            </property>
+          </widget>
         </item>
         <item>
           <widget class="QLabel" name="labelInitialXI">
@@ -698,7 +710,11 @@
           </widget>
         </item>
         <item>
-          <widget class="QLineEdit" name="lineEditInitialValueXI"> </widget>
+          <widget class="QLineEdit" name="lineEditInitialValueXI">
+            <property name="placeholderText">
+             <string>-9.99~9.99</string>
+            </property>
+          </widget>
         </item>
         <item>
           <widget class="QLabel" name="labelInitialYP">
@@ -708,7 +724,11 @@
           </widget>
         </item>
         <item>
-          <widget class="QLineEdit" name="lineEditInitialValueYP"> </widget>
+          <widget class="QLineEdit" name="lineEditInitialValueYP">
+            <property name="placeholderText">
+             <string>-9.99~9.99</string>
+            </property>
+          </widget>
         </item>
         <item>
           <widget class="QLabel" name="labelInitialXP">
@@ -718,14 +738,18 @@
           </widget>
         </item>
         <item>
-          <widget class="QLineEdit" name="lineEditInitialValueXP"> </widget>
+          <widget class="QLineEdit" name="lineEditInitialValueXP">
+            <property name="placeholderText">
+             <string>-9.99~9.99</string>
+            </property>
+          </widget>
         </item>
         </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="controlLayout">
         <item>
-         <layout class="QHBoxLayout" name="horizontalControlLayout">
+         <layout class="QHBoxLayout" name="horizontalMinusPlusLayout">
           <property name="spacing">
            <number>10</number>
           </property>
@@ -760,7 +784,7 @@
           <item>
            <widget class="QLineEdit" name="lineEditVoltage">
             <property name="placeholderText">
-             <string>输入偏压值 (-9.99~9.99)</string>
+             <string>-9.99~9.99</string>
             </property>
            </widget>
           </item>
@@ -771,17 +795,115 @@
             </property>
            </widget>
           </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="MinuxPlusLayout">
           <item>
-            <widget class="QPushButton" name="buttonVoltageReduce">
+            <widget class="QPushButton" name="buttonVoltageMinus0">
               <property name="text">
-              <string>-0.01</string>
+                <string>-1</string>
+              </property>
+              <property name="styleSheet">
+                <string>
+                  QPushButton {
+                    background-color: #BBDEFB;
+                    color: black;
+                  }
+                  QPushButton:hover {
+                    background-color: #90CAF9;
+                  }
+                </string>
               </property>
             </widget>
           </item>
           <item>
-            <widget class="QPushButton" name="buttonVoltageAdd">
+            <widget class="QPushButton" name="buttonVoltageMinus1">
               <property name="text">
-              <string>+0.01</string>
+                <string>-0.1</string>
+              </property>
+              <property name="styleSheet">
+                <string>
+                  QPushButton {
+                    background-color: #90CAF9;
+                    color: black;
+                  }
+                  QPushButton:hover {
+                    background-color: #64B5F6;
+                  }
+                </string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonVoltageMinus2">
+              <property name="text">
+                <string>-0.01</string>
+              </property>
+              <property name="styleSheet">
+                <string>
+                  QPushButton {
+                    background-color: #64B5F6;
+                    color: black;
+                  }
+                  QPushButton:hover {
+                    background-color: #42A5F5;
+                  }
+                </string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonVoltagePlus2">
+              <property name="text">
+                <string>+0.01</string>
+              </property>
+              <property name="styleSheet">
+                <string>
+                  QPushButton {
+                    background-color: #42A5F5;
+                    color: black;
+                  }
+                  QPushButton:hover {
+                    background-color: #2196F3;
+                  }
+                </string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonVoltagePlus1">
+              <property name="text">
+                <string>+0.1</string>
+              </property>
+              <property name="styleSheet">
+                <string>
+                  QPushButton {
+                    background-color: #2196F3;
+                    color: black;
+                  }
+                  QPushButton:hover {
+                    background-color: #1E88E5;
+                  }
+                </string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="buttonVoltagePlus0">
+              <property name="text">
+                <string>+1</string>
+              </property>
+              <property name="styleSheet">
+                <string>
+                  QPushButton {
+                    background-color: #1E88E5;
+                    color: black;
+                  }
+                  QPushButton:hover {
+                    background-color: #1565C0;
+                  }
+                </string>
               </property>
             </widget>
           </item>
@@ -790,7 +912,7 @@
         <item>
          <widget class="QPushButton" name="buttonSendControl">
           <property name="text">
-           <string>发送控制命令</string>
+            <string>发送控制命令</string>
           </property>
          </widget>
         </item>

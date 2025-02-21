@@ -29,6 +29,7 @@ private slots:
     void toggleControlMode();
     void sendControlData();
     void validateVoltageInput(const QString &text);
+    // void updateCurrentVoltage();
 
 private:
     Ui::MainWindow *ui;
@@ -38,7 +39,9 @@ private:
     QByteArray receiveBuffer;
     QTimer *receiveTimer;
     static const int RECEIVE_TIMEOUT = 50;
+    QMap<int, double> channelVoltages;
     QByteArray packProtocolData(bool isAuto, double voltage, int channel);
+    void updateCurrentVoltage();
 };
 
 #endif // MAINWINDOW_H
