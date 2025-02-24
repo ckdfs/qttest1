@@ -30,6 +30,7 @@ private slots:
     void toggleControlMode();
     void sendControlData();
     void sendChannelControlData(int channel, double voltage);
+    void sendInitialValues();
     void validateVoltageInput(QLineEdit *lineEdit, const QString &text);
     void onVoltageInputChanged(const QString &text);
     void onVoltageButtonClicked();

@@ -65,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonToggleMode, &QPushButton::clicked, this, &MainWindow::toggleControlMode);
     connect(ui->buttonSendControl, &QPushButton::clicked, this, &MainWindow::sendControlData);
     connect(ui->lineEditVoltage, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    connect(ui->buttonSetInitialValue, &QPushButton::clicked, this, &MainWindow::sendInitialValues);
 
     // 设置电压输入验证器
     QDoubleValidator *validator = new QDoubleValidator(-9.99, 9.99, 2, this);
@@ -213,6 +214,12 @@ void MainWindow::toggleSerialPort()
             ui->comboBoxChannel->setEnabled(true);
             
             QMessageBox::information(this, tr("成功"), tr("串口已打开"));
+
+            // 发送4开头的命令
+            QByteArray data = "40000000000000000000000000";
+            serial->write(data);
+            QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
+            ui->textEditHistory->append("[" + timestamp + "] 发送初始命令: " + data);
         } else {
             QMessageBox::critical(this, tr("错误"), serial->errorString());
         }
@@ -297,21 +304,21 @@ void MainWindow::processReceivedData()
             
             // 确保有6个数据
             if (voltages.size() == 6) {
-                // 更新UI显示，按XI,XQ,XP,YI,YQ,YP的顺序
-                ui->labelXIValue->setText(voltages[0].trimmed());
-                ui->labelXQValue->setText(voltages[1].trimmed());
-                ui->labelXPValue->setText(voltages[2].trimmed());
-                ui->labelYIValue->setText(voltages[3].trimmed());
-                ui->labelYQValue->setText(voltages[4].trimmed());
-                ui->labelYPValue->setText(voltages[5].trimmed());
+                // 更新UI显示，按YQ, YI, XQ, XI, YP, XP的顺序
+                ui->labelYQValue->setText(voltages[0].trimmed());
+                ui->labelYIValue->setText(voltages[1].trimmed());
+                ui->labelXQValue->setText(voltages[2].trimmed());
+                ui->labelXIValue->setText(voltages[3].trimmed());
+                ui->labelYPValue->setText(voltages[4].trimmed());
+                ui->labelXPValue->setText(voltages[5].trimmed());
 
                 // 更新存储的偏压值
-                channelVoltages[5] = voltages[0].toDouble();
-                channelVoltages[4] = voltages[1].toDouble();
-                channelVoltages[7] = voltages[2].toDouble();
-                channelVoltages[3] = voltages[3].toDouble();
-                channelVoltages[2] = voltages[4].toDouble();
-                channelVoltages[6] = voltages[5].toDouble();
+                channelVoltages[2] = voltages[0].toDouble(); // YQ
+                channelVoltages[3] = voltages[1].toDouble(); // YI
+                channelVoltages[4] = voltages[2].toDouble(); // XQ
+                channelVoltages[5] = voltages[3].toDouble(); // XI
+                channelVoltages[6] = voltages[4].toDouble(); // YP
+                channelVoltages[7] = voltages[5].toDouble(); // XP
 
                 // 更新当前偏压显示
                 updateCurrentVoltage();
@@ -353,7 +360,7 @@ void MainWindow::toggleControlMode()
         
         // 发送自动模式切换命令
         if (serial->isOpen()) {
-            QByteArray data = "100000";
+            QByteArray data = "10000000000000000000000000";
             serial->write(data);
             QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
             ui->textEditHistory->append("[" + timestamp + "] 发送自动模式命令: " + data);
@@ -381,7 +388,7 @@ void MainWindow::toggleControlMode()
 
         // 发送手动模式切换命令
         if (serial->isOpen()) {
-            QByteArray data = "200000";
+            QByteArray data = "20000000000000000000000000";
             serial->write(data);
             QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
             ui->textEditHistory->append("[" + timestamp + "] 发送手动模式命令: " + data);
@@ -457,6 +464,11 @@ QByteArray MainWindow::packProtocolData(bool isAuto, double voltage, int channel
     data.append('0' + static_cast<char>(intPart));
     data.append('0' + static_cast<char>(decimal1));
     data.append('0' + static_cast<char>(decimal2));
+
+    // 补0到26位
+    while (data.size() < 26) {
+        data.append('0');
+    }
     
     return data;
 }
@@ -499,4 +511,48 @@ void MainWindow::onVoltageButtonClicked()
     sendChannelControlData(channel, voltage);
 
     updateCurrentVoltage();
+}
+
+void MainWindow::sendInitialValues()
+{
+    if (!serial->isOpen()) {
+        QMessageBox::warning(this, tr("错误"), tr("串口未打开"));
+        return;
+    }
+
+    QByteArray data;
+    data.append('3');  // 命令以3开头
+
+    // 获取六个文本框中的数值并按照指定格式添加到数据中
+    QList<QLineEdit*> lineEdits = {
+        ui->lineEditInitialValueYQ,
+        ui->lineEditInitialValueYI,
+        ui->lineEditInitialValueXQ,
+        ui->lineEditInitialValueXI,
+        ui->lineEditInitialValueYP,
+        ui->lineEditInitialValueXP
+    };
+
+    for (QLineEdit *lineEdit : lineEdits) {
+        double voltage = lineEdit->text().toDouble();
+        data.append(voltage >= 0 ? '0' : '1');  // 符号位
+        double absVoltage = std::abs(voltage);
+        int intPart = static_cast<int>(absVoltage);  // 个位
+        int decimalPart = static_cast<int>(std::round(absVoltage * 100)) % 100;  // 两位小数
+        int decimal1 = decimalPart / 10;  // 小数十分位
+        int decimal2 = decimalPart % 10;  // 小数百分位
+        data.append('0' + static_cast<char>(intPart));
+        data.append('0' + static_cast<char>(decimal1));
+        data.append('0' + static_cast<char>(decimal2));
+    }
+
+    // 补0到26位
+    while (data.size() < 26) {
+        data.append('0');
+    }
+
+    serial->write(data);
+
+    QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
+    ui->textEditHistory->append("[" + timestamp + "] 发送初值命令: " + QString::fromUtf8(data));
 }
