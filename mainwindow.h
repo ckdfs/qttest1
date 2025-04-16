@@ -30,23 +30,25 @@ private slots:
     void toggleControlMode();
     void sendControlData();
     void sendChannelControlData(int channel, double voltage);
-    void sendInitialValues();
+    // void sendInitialValues();
     void validateVoltageInput(QLineEdit *lineEdit, const QString &text);
     void onVoltageInputChanged(const QString &text);
     void onVoltageButtonClicked();
-    // void updateCurrentVoltage();
+    void sendPowerDiffCommand();
+    void updatePowerDiffUi();
+    void updateCurrentVoltage();
 
 private:
     Ui::MainWindow *ui;
     QSerialPort *serial;
     bool isSerialPortOpen;
     bool isAutoMode;
+    bool powerDiffEnabled = false;
     QByteArray receiveBuffer;
     QTimer *receiveTimer;
     static const int RECEIVE_TIMEOUT = 50;
     QMap<int, double> channelVoltages;
     QByteArray packProtocolData(bool isAuto, double voltage, int channel);
-    void updateCurrentVoltage();
 };
 
 #endif // MAINWINDOW_H

@@ -65,26 +65,32 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonToggleMode, &QPushButton::clicked, this, &MainWindow::toggleControlMode);
     connect(ui->buttonSendControl, &QPushButton::clicked, this, &MainWindow::sendControlData);
     connect(ui->lineEditVoltage, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
-    connect(ui->buttonSetInitialValue, &QPushButton::clicked, this, &MainWindow::sendInitialValues);
+    // connect(ui->buttonSetInitialValue, &QPushButton::clicked, this, &MainWindow::sendInitialValues);
 
     // 设置电压输入验证器
     QDoubleValidator *validator = new QDoubleValidator(-9.99, 9.99, 2, this);
     validator->setNotation(QDoubleValidator::StandardNotation);
     ui->lineEditVoltage->setValidator(validator);
-    ui->lineEditInitialValueYQ->setValidator(validator);
-    ui->lineEditInitialValueYI->setValidator(validator);
-    ui->lineEditInitialValueXQ->setValidator(validator);
-    ui->lineEditInitialValueXI->setValidator(validator);
-    ui->lineEditInitialValueYP->setValidator(validator);
-    ui->lineEditInitialValueXP->setValidator(validator);
+    // ui->lineEditInitialValueYQ->setValidator(validator);
+    // ui->lineEditInitialValueYI->setValidator(validator);
+    // ui->lineEditInitialValueXQ->setValidator(validator);
+    // ui->lineEditInitialValueXI->setValidator(validator);
+    // ui->lineEditInitialValueYP->setValidator(validator);
+    // ui->lineEditInitialValueXP->setValidator(validator);
+
+    // 设置功率差输入验证器
+    QDoubleValidator *powerDiffValidator = new QDoubleValidator(0.0, 9.99, 2, this);
+    powerDiffValidator->setNotation(QDoubleValidator::StandardNotation);
+    ui->lineEditCurrentPowerDiff->setValidator(powerDiffValidator);
+    ui->lineEditTargetPowerDiff->setValidator(powerDiffValidator);
 
     // 连接其他输入框的信号槽
-    connect(ui->lineEditInitialValueYQ, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
-    connect(ui->lineEditInitialValueYI, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
-    connect(ui->lineEditInitialValueXQ, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
-    connect(ui->lineEditInitialValueXI, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
-    connect(ui->lineEditInitialValueYP, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
-    connect(ui->lineEditInitialValueXP, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    // connect(ui->lineEditInitialValueYQ, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    // connect(ui->lineEditInitialValueYI, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    // connect(ui->lineEditInitialValueXQ, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    // connect(ui->lineEditInitialValueXI, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    // connect(ui->lineEditInitialValueYP, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
+    // connect(ui->lineEditInitialValueXP, &QLineEdit::textChanged, this, &MainWindow::onVoltageInputChanged);
 
     // 连接增减按钮的信号槽
     connect(ui->buttonVoltageMinus0, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
@@ -93,6 +99,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonVoltagePlus2, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
     connect(ui->buttonVoltagePlus1, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
     connect(ui->buttonVoltagePlus0, &QPushButton::clicked, this, &MainWindow::onVoltageButtonClicked);
+
+    // 连接设置功率差按钮的信号槽
+    connect(ui->buttonSetPowerDiff, &QPushButton::clicked, this, &MainWindow::sendPowerDiffCommand);
 
     // 初始化控制模式按钮和发送控制命令按钮
     ui->buttonToggleMode->setEnabled(false);
@@ -119,6 +128,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 更新当前偏压显示
     updateCurrentVoltage();
+
+    powerDiffEnabled = false;
+    updatePowerDiffUi();
 }
 
 MainWindow::~MainWindow()
@@ -163,6 +175,9 @@ void MainWindow::toggleSerialPort()
         ui->comboBoxChannel->setEnabled(false);
         
         QMessageBox::information(this, tr("成功"), tr("串口已关闭"));
+
+        powerDiffEnabled = false;
+        updatePowerDiffUi();
     } else {
         QString portName = ui->comboBoxPort->currentText();  // 直接使用显示的文本
         
@@ -220,6 +235,9 @@ void MainWindow::toggleSerialPort()
             serial->write(data);
             QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
             ui->textEditHistory->append("[" + timestamp + "] 发送初始命令: " + data);
+
+            powerDiffEnabled = false;
+            updatePowerDiffUi();
         } else {
             QMessageBox::critical(this, tr("错误"), serial->errorString());
         }
@@ -295,6 +313,12 @@ void MainWindow::processReceivedData()
 
         // 显示接收到的数据
         ui->textEditHistory->append("[" + timestamp + "] 接收: " + line);
+
+        // 检查是否收到6000...命令
+        if (line.startsWith("60000000000000000000000000")) {
+            powerDiffEnabled = true;
+            updatePowerDiffUi();
+        }
 
         // 检查数据是否以"Bias Voltage"开头
         if (line.startsWith("Bias Voltage")) {
@@ -513,46 +537,88 @@ void MainWindow::onVoltageButtonClicked()
     updateCurrentVoltage();
 }
 
-void MainWindow::sendInitialValues()
+// void MainWindow::sendInitialValues()
+// {
+//     if (!serial->isOpen()) {
+//         QMessageBox::warning(this, tr("错误"), tr("串口未打开"));
+//         return;
+//     }
+
+//     QByteArray data;
+//     data.append('3');  // 命令以3开头
+
+//     // 获取六个文本框中的数值并按照指定格式添加到数据中
+//     QList<QLineEdit*> lineEdits = {
+//         ui->lineEditInitialValueYQ,
+//         ui->lineEditInitialValueYI,
+//         ui->lineEditInitialValueXQ,
+//         ui->lineEditInitialValueXI,
+//         ui->lineEditInitialValueYP,
+//         ui->lineEditInitialValueXP
+//     };
+
+//     for (QLineEdit *lineEdit : lineEdits) {
+//         double voltage = lineEdit->text().toDouble();
+//         data.append(voltage >= 0 ? '0' : '1');  // 符号位
+//         double absVoltage = std::abs(voltage);
+//         int intPart = static_cast<int>(absVoltage);  // 个位
+//         int decimalPart = static_cast<int>(std::round(absVoltage * 100)) % 100;  // 两位小数
+//         int decimal1 = decimalPart / 10;  // 小数十分位
+//         int decimal2 = decimalPart % 10;  // 小数百分位
+//         data.append('0' + static_cast<char>(intPart));
+//         data.append('0' + static_cast<char>(decimal1));
+//         data.append('0' + static_cast<char>(decimal2));
+//     }
+
+//     // 补0到26位
+//     while (data.size() < 26) {
+//         data.append('0');
+//     }
+
+//     serial->write(data);
+
+//     QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
+//     ui->textEditHistory->append("[" + timestamp + "] 发送初值命令: " + QString::fromUtf8(data));
+// }
+
+void MainWindow::sendPowerDiffCommand()
 {
     if (!serial->isOpen()) {
         QMessageBox::warning(this, tr("错误"), tr("串口未打开"));
         return;
     }
 
-    QByteArray data;
-    data.append('3');  // 命令以3开头
+    QString curStr = ui->lineEditCurrentPowerDiff->text();
+    QString tarStr = ui->lineEditTargetPowerDiff->text();
 
-    // 获取六个文本框中的数值并按照指定格式添加到数据中
-    QList<QLineEdit*> lineEdits = {
-        ui->lineEditInitialValueYQ,
-        ui->lineEditInitialValueYI,
-        ui->lineEditInitialValueXQ,
-        ui->lineEditInitialValueXI,
-        ui->lineEditInitialValueYP,
-        ui->lineEditInitialValueXP
-    };
+    bool ok1 = false, ok2 = false;
+    double curVal = curStr.toDouble(&ok1);
+    double tarVal = tarStr.toDouble(&ok2);
 
-    for (QLineEdit *lineEdit : lineEdits) {
-        double voltage = lineEdit->text().toDouble();
-        data.append(voltage >= 0 ? '0' : '1');  // 符号位
-        double absVoltage = std::abs(voltage);
-        int intPart = static_cast<int>(absVoltage);  // 个位
-        int decimalPart = static_cast<int>(std::round(absVoltage * 100)) % 100;  // 两位小数
-        int decimal1 = decimalPart / 10;  // 小数十分位
-        int decimal2 = decimalPart % 10;  // 小数百分位
-        data.append('0' + static_cast<char>(intPart));
-        data.append('0' + static_cast<char>(decimal1));
-        data.append('0' + static_cast<char>(decimal2));
+    if (!ok1 || !ok2 || curVal < 0 || curVal > 9.99 || tarVal < 0 || tarVal > 9.99) {
+        QMessageBox::warning(this, tr("错误"), tr("请输入0~9.99之间的功率差值"));
+        return;
     }
 
-    // 补0到26位
-    while (data.size() < 26) {
-        data.append('0');
-    }
+    int curInt = static_cast<int>(std::round(curVal * 100));
+    int tarInt = static_cast<int>(std::round(tarVal * 100));
+
+    QString curStr3 = QString("%1").arg(curInt, 3, 10, QChar('0'));
+    QString tarStr3 = QString("%1").arg(tarInt, 3, 10, QChar('0'));
+
+    QByteArray data = "5" + curStr3.toUtf8() + tarStr3.toUtf8();
+    while (data.size() < 26) data.append('0');
 
     serial->write(data);
 
     QString timestamp = QDateTime::currentDateTime().toString("HH:mm:ss.zzz");
-    ui->textEditHistory->append("[" + timestamp + "] 发送初值命令: " + QString::fromUtf8(data));
+    ui->textEditHistory->append("[" + timestamp + "] 发送功率差命令: " + QString::fromUtf8(data));
+}
+
+void MainWindow::updatePowerDiffUi()
+{
+    ui->buttonSetPowerDiff->setEnabled(powerDiffEnabled);
+    ui->buttonSetPowerDiff->setStyleSheet(powerDiffEnabled ? "background-color: #2196F3; color: white;" : "background-color: #9E9E9E; color: white;");
+    ui->lineEditCurrentPowerDiff->setEnabled(powerDiffEnabled);
+    ui->lineEditTargetPowerDiff->setEnabled(powerDiffEnabled);
 }

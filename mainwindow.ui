@@ -649,6 +649,63 @@
        </widget>
       </item>
       <item>
+        <layout class="QHBoxLayout" name="horizontalPowerDiffLayout">
+            <item>
+                <widget class="QPushButton" name="buttonSetPowerDiff">
+                    <property name="text">
+                        <string>设置功率差</string>
+                    </property>
+                    <property name="styleSheet">
+                        <string>QPushButton { background-color: #2196F3; color: white; }</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="labelCurrentPowerDiff">
+                    <property name="text">
+                        <string>当前射频功率差</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLineEdit" name="lineEditCurrentPowerDiff">
+                    <property name="placeholderText">
+                        <string>0~9.99</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="labelCurrentPowerDiffUnit">
+                    <property name="text">
+                        <string>dB</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="labelTargetPowerDiff">
+                    <property name="text">
+                        <string>目标射频功率差</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLineEdit" name="lineEditTargetPowerDiff">
+                    <property name="placeholderText">
+                        <string>0~9.99</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="labelTargetPowerDiffUnit">
+                    <property name="text">
+                        <string>dB</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+      </item>
+        <!--
+      <item>
         <layout class="QHBoxLayout" name="horizontalControlLayout">
         <property name="spacing">
           <number>10</number>
@@ -746,6 +803,7 @@
         </item>
         </layout>
       </item>
+        -->
       <item>
        <layout class="QVBoxLayout" name="controlLayout">
         <item>
