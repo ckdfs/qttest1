@@ -453,7 +453,7 @@ QByteArray MainWindow::packProtocolData(bool isAuto, double voltage, int channel
     
     // 处理电压值
     double absVoltage = std::abs(voltage);
-    int intPart = static_cast<int>(absVoltage);  // 整数部分
+    int intPart = static_cast<int>(absVoltage + 1e-6);  // 整数部分 加一个极小值，避免浮点误差
     
     // 正确处理小数部分
     int decimalPart = static_cast<int>(std::round(absVoltage * 100)) % 100;  // 两位小数
@@ -507,7 +507,7 @@ void MainWindow::onVoltageButtonClicked()
     if (voltage < -9.99) voltage = -9.99;
     if (voltage > 9.99) voltage = 9.99;
 
-    // channelVoltages[channel] = voltage;
+    channelVoltages[channel] = voltage;
     sendChannelControlData(channel, voltage);
 
     updateCurrentVoltage();
