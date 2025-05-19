@@ -807,11 +807,10 @@
       <item>
        <layout class="QVBoxLayout" name="controlLayout">
         <item>
-         <layout class="QHBoxLayout" name="horizontalMinusPlusLayout">
-          <property name="spacing">
-           <number>10</number>
-          </property>
+         <layout class="QVBoxLayout" name="verticalLayoutCW">
           <item>
+           <layout class="QHBoxLayout" name="horizontalMinusPlusLayoutCW">
+            <item>
            <widget class="QPushButton" name="buttonToggleMode">
             <property name="text">
              <string>手动模式</string>
@@ -819,160 +818,178 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelChannel">
+           <widget class="QLabel" name="labelCW">
+            <property name="text">
+             <string>CW</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelChannelCW">
             <property name="text">
              <string>通道</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBoxChannel">
+           <widget class="QComboBox" name="comboBoxChannelCW">
             <property name="minimumWidth">
              <number>100</number>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelVoltage">
+           <widget class="QLabel" name="labelVoltageCW">
             <property name="text">
              <string>偏压</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEditVoltage">
+           <widget class="QLineEdit" name="lineEditVoltageCW">
             <property name="placeholderText">
              <string>-9.99~9.99</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelCurrentVoltage">
+           <widget class="QLabel" name="labelCurrentVoltageCW">
             <property name="text">
              <string>当前偏压：0.00</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="MinuxPlusLayout">
-          <item>
-            <widget class="QPushButton" name="buttonVoltageMinus0">
-              <property name="text">
-                <string>-1</string>
-              </property>
-              <property name="styleSheet">
-                <string>
-                  QPushButton {
-                    background-color: #BBDEFB;
-                    color: black;
-                  }
-                  QPushButton:hover {
-                    background-color: #90CAF9;
-                  }
-                </string>
-              </property>
-            </widget>
+           </layout>
           </item>
           <item>
-            <widget class="QPushButton" name="buttonVoltageMinus1">
-              <property name="text">
-                <string>-0.1</string>
-              </property>
-              <property name="styleSheet">
-                <string>
-                  QPushButton {
-                    background-color: #90CAF9;
-                    color: black;
-                  }
-                  QPushButton:hover {
-                    background-color: #64B5F6;
-                  }
-                </string>
-              </property>
-            </widget>
+           <layout class="QHBoxLayout" name="MinuxPlusLayoutCW">
+            <item>
+             <widget class="QPushButton" name="buttonVoltageMinus0_CW">
+              <property name="text"><string>-1</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltageMinus1_CW">
+              <property name="text"><string>-0.1</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltageMinus2_CW">
+              <property name="text"><string>-0.01</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltagePlus2_CW">
+              <property name="text"><string>+0.01</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltagePlus1_CW">
+              <property name="text"><string>+0.1</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltagePlus0_CW">
+              <property name="text"><string>+1</string></property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-            <widget class="QPushButton" name="buttonVoltageMinus2">
-              <property name="text">
-                <string>-0.01</string>
-              </property>
-              <property name="styleSheet">
-                <string>
-                  QPushButton {
-                    background-color: #64B5F6;
-                    color: black;
-                  }
-                  QPushButton:hover {
-                    background-color: #42A5F5;
-                  }
-                </string>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="buttonVoltagePlus2">
-              <property name="text">
-                <string>+0.01</string>
-              </property>
-              <property name="styleSheet">
-                <string>
-                  QPushButton {
-                    background-color: #42A5F5;
-                    color: black;
-                  }
-                  QPushButton:hover {
-                    background-color: #2196F3;
-                  }
-                </string>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="buttonVoltagePlus1">
-              <property name="text">
-                <string>+0.1</string>
-              </property>
-              <property name="styleSheet">
-                <string>
-                  QPushButton {
-                    background-color: #2196F3;
-                    color: black;
-                  }
-                  QPushButton:hover {
-                    background-color: #1E88E5;
-                  }
-                </string>
-              </property>
-            </widget>
-          </item>
-          <item>
-            <widget class="QPushButton" name="buttonVoltagePlus0">
-              <property name="text">
-                <string>+1</string>
-              </property>
-              <property name="styleSheet">
-                <string>
-                  QPushButton {
-                    background-color: #1E88E5;
-                    color: black;
-                  }
-                  QPushButton:hover {
-                    background-color: #1565C0;
-                  }
-                </string>
-              </property>
-            </widget>
+           <widget class="QPushButton" name="buttonSendControlCW">
+            <property name="text"><string>发送CW控制命令</string></property>
+           </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="buttonSendControl">
-          <property name="text">
-            <string>发送控制命令</string>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayoutCCW">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalMinusPlusLayoutCCW">
+            <item>
+           <widget class="QLabel" name="labelCCW">
+            <property name="text">
+             <string>CCW</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelChannelCCW">
+            <property name="text">
+             <string>通道</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBoxChannelCCW">
+            <property name="minimumWidth">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelVoltageCCW">
+            <property name="text">
+             <string>偏压</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEditVoltageCCW">
+            <property name="placeholderText">
+             <string>-9.99~9.99</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelCurrentVoltageCCW">
+            <property name="text">
+             <string>当前偏压：0.00</string>
+            </property>
+           </widget>
+          </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="MinuxPlusLayoutCCW">
+            <item>
+             <widget class="QPushButton" name="buttonVoltageMinus0_CCW">
+              <property name="text"><string>-1</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltageMinus1_CCW">
+              <property name="text"><string>-0.1</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltageMinus2_CCW">
+              <property name="text"><string>-0.01</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltagePlus2_CCW">
+              <property name="text"><string>+0.01</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltagePlus1_CCW">
+              <property name="text"><string>+0.1</string></property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonVoltagePlus0_CCW">
+              <property name="text"><string>+1</string></property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonSendControlCCW">
+            <property name="text"><string>发送CCW控制命令</string></property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>

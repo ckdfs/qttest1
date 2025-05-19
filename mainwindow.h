@@ -37,6 +37,14 @@ private slots:
     void sendPowerDiffCommand();
     void updatePowerDiffUi();
     void updateCurrentVoltage();
+    // 新增CW/CCW相关槽函数声明
+    void updateCurrentVoltageCW();
+    void updateCurrentVoltageCCW();
+    void onVoltageInputChangedCW(const QString &text);
+    void onVoltageInputChangedCCW(const QString &text);
+    void sendControlDataCW();
+    void sendControlDataCCW();
+    void onVoltageButtonClickedCCW();
 
 private:
     Ui::MainWindow *ui;
@@ -48,6 +56,8 @@ private:
     QTimer *receiveTimer;
     static const int RECEIVE_TIMEOUT = 50;
     QMap<int, double> channelVoltages;
+    QMap<int, double> channelVoltagesCW;
+    QMap<int, double> channelVoltagesCCW;
     QByteArray packProtocolData(bool isAuto, double voltage, int channel);
 };
 
